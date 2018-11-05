@@ -1,0 +1,29 @@
+Private Sub Add_New_Cust_Click()
+
+    AddNewCustomer.Show
+    
+End Sub
+
+Private Sub Update_Cust_Click()
+
+    UpdateCustomer.Show
+    
+End Sub
+
+Private Sub Delete_Cust_Click()
+    
+    DeleteCustomer.Show
+    
+End Sub
+
+Private Sub Employee_sheet_Click()
+
+    Sheets("EMPLOYEE").Select
+    
+End Sub
+
+Private Sub Home_Click()
+
+   Sheets("MAIN_MENU").Select
+   
+End Sub
