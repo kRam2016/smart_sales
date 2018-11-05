@@ -1,0 +1,101 @@
+Dim regSheet, OrderSheet, CompSheet, ProdSheet, FilledSheet As Worksheet
+Dim lastRow As Long
+
+Private Sub CommandButton1_Click()
+'http://www.techonthenet.com/excel/pivottbls/button_refresh2013.php
+    Sheets("LOCATION_ANALYSIS").Range("A42").Select
+    ActiveSheet.PivotTables("PivotTable10").RefreshTable
+    Sheets("LOCATION_ANALYSIS").Select
+    ActiveSheet.PivotTables("PivotTable10").RefreshTable
+    Columns("A:A").EntireColumn.AutoFit
+    Columns("B:B").EntireColumn.AutoFit
+    Columns("C:C").EntireColumn.AutoFit
+    Columns("D:D").EntireColumn.AutoFit
+    Rows("35:35").RowHeight = 28
+    
+End Sub
+
+Private Sub Image1_Click()
+    
+    Sheets("MAIN_MENU").Select
+    
+End Sub
+
+Private Sub Image2_Click()
+    
+    Sheets("LOCATION_ANALYSIS").Range("A1").Select
+    
+End Sub
+
+Private Sub SpinButton1_Change()
+    TextBox1.Text = SpinButton1.Value + 100
+    details
+End Sub
+
+Private Sub TextBox1_Change()
+    TextBox1.Text = SpinButton1.Value + 100
+    details
+    
+End Sub
+Private Sub Worksheet_Activate()
+    
+    Set regSheet = Sheets("Regions")
+    Set OrderSheet = Sheets("ORDERS_LIST")
+    Set CompSheet = Sheets("COMPANY")
+    Set ProdSheet = Sheets("PRODUCTS_ORDERED")
+    lastRow = regSheet.Range("A" & Rows.Count).End(xlUp).Row
+    
+    SpinButton1.Max = lastRow
+    
+    details
+
+' EXCEL FEATURES: http://spreadsheetpage.com/index.php/tip/cell_counting_techniques/
+    
+End Sub
+
+Public Sub details()
+'    Dim a, x, y, t, b, i As Integer
+    Dim c As Range
+    Dim c_id, comp As String
+'    Dim lastRow_comp As Long
+
+    Set regSheet = Sheets("Regions")
+'    Set OrderSheet = Sheets("ORDERS_LIST")
+    Set CompSheet = Sheets("COMPANY")
+'    Set ProdSheet = Sheets("PRODUCTS_ORDERED")
+    Set FilledSheet = Sheets("LOCATION_ANALYSIS")
+    
+'    lastRow = regSheet.Range("A" & Rows.Count).End(xlUp).Row
+'    lastRow_comp = CompSheet.Range("A" & Rows.Count).End(xlUp).Row
+'
+    With CompSheet.Range("regions_comp")
+'https://msdn.microsoft.com/en-us/library/office/ff839746.aspx
+            Set c = .Find(TextBox1.Text)
+            
+            If Not c Is Nothing Then
+                
+                firstAddress = c.Address
+                Do
+                    c_id = CompSheet.Cells(c.Row, "A")
+                    comp = CompSheet.Cells(c.Row, "B")
+
+                    FilledSheet.Cells(5, "A") = c_id
+                    FilledSheet.Cells(5, "B") = comp
+
+                    c.Value = TextBox1.Text
+                    Set c = .FindNext(c)
+                Loop While Not c Is Nothing And c.Address <> firstAddress
+            
+            Else
+            
+                c_id = "-"
+                comp = "-"
+
+                FilledSheet.Cells(5, "A") = c_id
+                FilledSheet.Cells(5, "B") = comp
+            
+            End If
+            
+    End With
+    
+End Sub
