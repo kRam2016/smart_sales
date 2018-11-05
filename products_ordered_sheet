@@ -1,0 +1,17 @@
+Private Sub CommandButton1_Click()
+    
+    Sheets("ORDER_DETAILS").Select
+    
+End Sub
+
+Private Sub CommandButton2_Click()
+    
+    Sheets("ORDERS_LIST").Select
+    
+End Sub
+
+Private Sub Image1_Click()
+    
+    Sheets("MAIN_MENU").Select
+
+End Sub
