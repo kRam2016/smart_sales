@@ -1,1 +1,1 @@
-# smart_sales
+# Smart Sales
