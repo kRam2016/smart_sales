@@ -1,0 +1,32 @@
+Private Sub CommandButton1_Click()
+'
+' formating_performance Macro
+'
+
+'
+'http://www.techonthenet.com/excel/pivottbls/button_refresh2013.php
+
+    ActiveSheet.PivotTables("PivotTable2").RefreshTable
+    Sheets("PERFORMANCE_ANALYSIS").Select
+    ActiveSheet.PivotTables("PivotTable2").RefreshTable
+    
+    Columns("B:B").EntireColumn.AutoFit
+    Columns("C:C").Style = "Currency"
+'    Range("C4").Select
+    Rows("7:7").RowHeight = 28
+    Range("A1").Select
+    
+End Sub
+
+Private Sub Image1_Click()
+    Sheets("MAIN_MENU").Select
+End Sub
+
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+    
+    Columns("B:B").EntireColumn.AutoFit
+    Columns("C:C").Style = "Currency"
+'    Range("C4").Select
+    Rows("7:7").RowHeight = 28
+    
+End Sub
