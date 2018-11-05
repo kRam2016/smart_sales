@@ -1,0 +1,145 @@
+Dim lastRow As Long
+Dim TheSheet, CompSheet, ProdSheet, FilledSheet As Worksheet
+    
+Private Sub CommandButton1_Click()
+    
+    AddNewOrder.Show
+        
+End Sub
+
+Private Sub CommandButton2_Click()
+    
+    Sheets("ORDERS_LIST").Select
+    
+End Sub
+
+Private Sub Image1_Click()
+    
+    Sheets("MAIN_MENU").Select
+    
+End Sub
+
+Private Sub SpinButton1_Change()
+    TextBox1.Text = "O" & SpinButton1.Value
+    details
+End Sub
+
+Private Sub TextBox1_Change()
+    TextBox1.Text = "O" & SpinButton1.Value
+    
+End Sub
+
+Private Sub TextBox1_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    Order_ID_Search.Show
+End Sub
+
+Private Sub Worksheet_Activate()
+    
+    Set FilledSheet = Sheets("ORDER_DETAILS")
+    Set TheSheet = Sheets("ORDERS_LIST")
+    Set CompSheet = Sheets("COMPANY")
+    
+    lastRow = TheSheet.Range("A" & Rows.Count).End(xlUp).Row
+    SpinButton1.Max = lastRow - 3
+    
+    details
+End Sub
+
+Public Sub details()
+
+    Dim a, x, y, t, b, i As Integer
+    Dim c, c1 As Range
+    Dim c_id, o_price, o_date, o_sat, comp As String
+    Dim lastRow_prods_ordered, lastRow_details As Long
+
+        
+    Set FilledSheet = Sheets("ORDER_DETAILS")
+    Set TheSheet = Sheets("ORDERS_LIST")
+    Set CompSheet = Sheets("COMPANY")
+    Set ProdSheet = Sheets("PRODUCTS_ORDERED")
+     
+    lastRow_details = FilledSheet.Range("A" & Rows.Count).End(xlUp).Row
+
+    For x = 10 To lastRow_details
+        FilledSheet.Range("A" & x).Select
+        Selection.Delete Shift:=xlUp
+        FilledSheet.Range("B" & x).Select
+        Selection.Delete Shift:=xlUp
+        FilledSheet.Range("C" & x).Select
+        Selection.Delete Shift:=xlUp
+        FilledSheet.Range("D" & x).Select
+        Selection.Delete Shift:=xlUp
+    Next
+        
+    With TheSheet.Range("order_list")
+        Set c = .Find(TextBox1.Text)
+        
+        c_id = TheSheet.Cells(c.Row, "B")
+        o_price = TheSheet.Cells(c.Row, "D")
+        o_date = TheSheet.Cells(c.Row, "C")
+        o_sat = TheSheet.Cells(c.Row, "E")
+        
+        FilledSheet.Cells(4, "D") = c_id
+        FilledSheet.Cells(5, "B") = o_price
+        FilledSheet.Cells(6, "B") = o_date
+        FilledSheet.Cells(6, "D") = o_sat
+                
+    End With
+
+    With CompSheet.Range("comp_ID")
+
+        Set c1 = .Find(c_id, LookIn:=xlValues)
+            
+        If c1 Is Nothing Then
+            comp = c_id & " - Deleted"
+        Else
+            comp = CompSheet.Cells(c1.Row, "B")
+        End If
+        
+        FilledSheet.Cells(4, "B") = comp
+
+    End With
+       
+   lastRow_prods_ordered = ProdSheet.Range("A" & Rows.Count).End(xlUp).Row
+
+    a = 10
+    For i = 1 To lastRow_prods_ordered
+
+        If ProdSheet.Cells(i, "A") = TextBox1.Text Then
+        
+                FilledSheet.Cells(a, "A") = ProdSheet.Cells(i, "B")
+                a = a + 1
+                
+        End If
+    Next
+    
+    For m = 10 To a
+        
+        Range("B" & m).Select
+        ActiveCell.FormulaR1C1 = _
+            "=IF(ISBLANK(RC[-1]),"""",IF(ISERROR(VLOOKUP(RC[-1],PRODUCTS_DETAILS!R5C1:R100C2,2,TRUE)), VLOOKUP(RC[-1],PRODUCTS_DETAILS!R5C1:R100C2,2,FALSE), VLOOKUP(RC[-1],PRODUCTS_DETAILS!R5C1:R100C2,2,TRUE)))"
+        
+        Range("C" & m).Select
+        ActiveCell.FormulaR1C1 = _
+            "=IF(ISBLANK(RC[-2]),"""",IF(ISERROR(VLOOKUP(RC[-2],products_ordered,3,FALSE)),VLOOKUP(RC[-2],products_ordered,3,TRUE),VLOOKUP(RC[-2],products_ordered,3,FALSE)))"
+    
+        Range("D" & m).Select
+        ActiveCell.FormulaR1C1 = _
+            "=IF(ISBLANK(RC[-3]),"""",IF(ISERROR((VLOOKUP(RC[-3],product_details,8, TRUE))*RC[-1]), (VLOOKUP(RC[-3],product_details,8, FALSE))*RC[-1], (VLOOKUP(RC[-3],product_details,8, TRUE))*RC[-1]))"
+        Selection.Style = "Currency"
+        
+        Range("A1").Select
+        
+    Next
+        
+    Range("D10:D15").Select
+    ActiveWorkbook.Names.Add name:="sum_products", RefersToR1C1:= _
+        "=ORDER_DETAILS!R10C4:R15C4"
+    
+    Range("B" & 5).Select
+    ActiveCell.FormulaR1C1 = "=SUM(sum_products)"
+
+    
+    Range("A1").Select
+        
+End Sub
