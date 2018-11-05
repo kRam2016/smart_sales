@@ -1,0 +1,19 @@
+Dim c_id As String
+
+Private Sub CommandButton1_Click()
+
+    Sheets("ORDER_DETAILS").Select
+
+End Sub
+
+Private Sub CommandButton2_Click()
+    
+    Sheets("PRODUCTS_ORDERED").Select
+    
+End Sub
+
+Private Sub Image1_Click()
+    
+    Sheets("MAIN_MENU").Select
+    
+End Sub
