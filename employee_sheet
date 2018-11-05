@@ -1,0 +1,27 @@
+Private Sub Add_emp_Click()
+
+    AddNewEmployee.Show
+
+End Sub
+
+Private Sub Update_emp_Click()
+    
+    UpdateEmployee.Show
+    
+End Sub
+
+Private Sub CommandButton1_Click()
+    
+    Sheets("COMPANY").Select
+    
+End Sub
+
+Private Sub Delete_emp_Click()
+
+    DeleteEmployee.Show
+
+End Sub
+
+Private Sub Home_Click()
+    Sheets("MAIN_MENU").Select
+End Sub
