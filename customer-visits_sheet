@@ -1,0 +1,51 @@
+Private Sub add_Visit_Click()
+    
+    AddNewVisit.Show
+    
+End Sub
+
+Private Sub CommandButton1_Click()
+
+    Range("visits").Select
+    ActiveWorkbook.Worksheets("VISITS").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("VISITS").Sort.SortFields.Add Key:=Range("visits_date") _
+        , SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("VISITS").Sort
+        .SetRange Range("visits")
+        .Header = xlGuess
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+    Range("A1").Select
+    
+End Sub
+
+
+Private Sub CommandButton2_Click()
+
+    Range("visits").Select
+    ActiveWorkbook.Worksheets("VISITS").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("VISITS").Sort.SortFields.Add Key:=Range("follow_ups") _
+        , SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("VISITS").Sort
+        .SetRange Range("visits")
+        .Header = xlGuess
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+    
+    Range("A1").Select
+    
+End Sub
+
+Private Sub Image1_Click()
+
+    Sheets("MAIN_MENU").Select
+    
+End Sub
