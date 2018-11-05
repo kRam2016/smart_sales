@@ -1,0 +1,41 @@
+Private Sub CommandButton1_Click()
+    '
+    ' Go To Company Sheet Macro
+    '
+    Sheets("COMPANY").Select
+End Sub
+
+Private Sub CommandButton2_Click()
+    '
+    'Go To Products_Details Sheet Macro
+    '
+    Sheets("PRODUCTS_DETAILS").Select
+End Sub
+
+Private Sub CommandButton3_Click()
+    '
+    'Go To Visits Sheet Macro
+    '
+    Sheets("VISITS").Select
+End Sub
+
+Private Sub CommandButton4_Click()
+    '
+    'Go To Order_Details Sheet Macro
+    '
+    Sheets("ORDER_DETAILS").Select
+End Sub
+
+Private Sub CommandButton5_Click()
+    '
+    'Go To Location_Analysis Sheet Macro
+    '
+    Sheets("LOCATION_ANALYSIS").Select
+End Sub
+
+Private Sub CommandButton6_Click()
+    '
+    'Go To Company_Analysis Sheet Macro
+    '
+    Sheets("PERFORMANCE_ANALYSIS").Select
+End Sub
