@@ -1,0 +1,132 @@
+Private Sub CommandButton1_Click()
+    
+    ActiveWorkbook.Worksheets("PRODUCTS_DETAILS").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("PRODUCTS_DETAILS").Sort.SortFields.Add Key:=Range( _
+        "D5:D100"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+        xlSortNormal
+    With ActiveWorkbook.Worksheets("PRODUCTS_DETAILS").Sort
+        .SetRange Range("A5:H100")
+        .Header = xlGuess
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+    Range("A1").Select
+    
+End Sub
+
+Private Sub CommandButton2_Click()
+    
+    If Worksheets("PRODUCTS_DETAILS").OptionButton1.Value = True Then
+    
+        ActiveWorkbook.Worksheets("PRODUCTS_DETAILS").Sort.SortFields.Clear
+        ActiveWorkbook.Worksheets("PRODUCTS_DETAILS").Sort.SortFields.Add Key:=Range( _
+            "prices"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+            xlSortNormal
+        With ActiveWorkbook.Worksheets("PRODUCTS_DETAILS").Sort
+            .SetRange Range("product_details")
+            .Header = xlGuess
+            .MatchCase = False
+            .Orientation = xlTopToBottom
+            .SortMethod = xlPinYin
+            .Apply
+        End With
+    
+    ElseIf OptionButton2.Value = True Then
+    
+        ActiveWorkbook.Worksheets("PRODUCTS_DETAILS").Sort.SortFields.Clear
+        ActiveWorkbook.Worksheets("PRODUCTS_DETAILS").Sort.SortFields.Add Key:=Range( _
+            "prices"), SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:= _
+            xlSortNormal
+        With ActiveWorkbook.Worksheets("PRODUCTS_DETAILS").Sort
+            .SetRange Range("product_details")
+            .Header = xlGuess
+            .MatchCase = False
+            .Orientation = xlTopToBottom
+            .SortMethod = xlPinYin
+            .Apply
+        End With
+    
+    Else
+    
+        MsgBox "Please select a form of sorting: 'Min to Max' Prices or 'Max to Min' Prices"
+    
+    End If
+    
+    Range("A1").Select
+    
+End Sub
+
+Private Sub CommandButton3_Click()
+
+    Dim RetValue, prod_id As String
+    Dim series, sell_price As Integer
+    Dim Rng As Range
+    Dim RowCount As Long
+    Dim TheSheet As Worksheet
+    
+    Set TheSheet = Sheets("PRODUCTS_DETAILS")
+    
+    If Len(TextBox1.Value) = 0 Then
+        MsgBox "Please input a valid material.", vbCritical, "Invalid Input"
+    
+    Else
+        
+        RetValue = TextBox1.Value
+        
+        With TheSheet.Range("D:D")
+            
+            Set Rng = .Find(RetValue)
+            
+            If Not Rng Is Nothing Then
+                
+                firstAddress = Rng.Address
+                
+                Do
+                    RowCount = Rng.Row
+                    
+                    prod_id = TheSheet.Cells(RowCount, "A")
+                    series = TheSheet.Cells(RowCount, "C")
+                    sell_price = TheSheet.Cells(RowCount, "H")
+                    
+                    MsgBox "Product ID (P_ID): " & prod_id & " | Series: " & series & " | Price: $" & sell_price, vbOKOnly, "Information About Material: " & RetValue
+                    
+                    Rng.Value = TextBox1.Text
+                    Set Rng = .FindNext(Rng)
+                    
+                Loop While (Not Rng Is Nothing) And Rng.Address <> firstAddress
+                
+            Else
+                MsgBox "The input material was not found"
+            
+            End If
+        
+        End With
+        
+    End If
+    
+    TheSheet.Select
+    TextBox1.Text = ""
+    
+End Sub
+
+
+Private Sub CommandButton4_Click()
+    
+    AddNewProduct.Show
+
+End Sub
+
+Private Sub Image1_Click()
+    Sheets("MAIN_MENU").Select
+End Sub
+
+Private Sub OptionButton1_Click()
+
+End Sub
+
+Private Sub OptionButton2_Click()
+
+End Sub
